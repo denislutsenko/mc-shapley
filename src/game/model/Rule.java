@@ -20,7 +20,7 @@ public class Rule {
     public static BigDecimal parseValue(String line) throws InvalidPatternException {
         line = line.replace(" ", "");
 
-        if (!line.matches("\\{\\w*((&|/\\\\)(~|-|!)*\\w+)*\\}(=>|->|=)\\d+")){
+        if (!line.matches("\\{\\w*((&|/\\\\)(~|-|!)*\\w+)*\\}(=>|->|=)(-)*\\d+")){
             throw new InvalidPatternException("Input does not match the rule's syntax! Syntax: \"{Ben /\\ !John} -> 5\" (without quotes).");
         }
 

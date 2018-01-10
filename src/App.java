@@ -31,7 +31,6 @@ public class App {
         printf(">> All rules should be entered using the following syntax: \"{Ben /\\ !John} -> 5\" (without quotes).%n");
         print("Players' names are case-insensitive (e.g \"Ben\" is the same as \"ben\").");
         print("First literal of the rule can't be negated.");
-        print("Negative values are not allowed.");
         print("Symbols allowed to represent conjunction: \"&\", \"/\\\"(slash and backslash).");
         print("Allowed arrows: \"=\", \"=>\". \"->\".");
         print("Allowed negation symbols: \"~\", \"-\", \"!\".");

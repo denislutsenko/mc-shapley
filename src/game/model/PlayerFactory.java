@@ -33,7 +33,7 @@ public class PlayerFactory {
     public static Map<Boolean, List<Player>> parsePlayers(String line) throws InvalidPatternException {
         line = line.replace(" ", "");
 
-        if (!line.matches("\\{\\w*((&|/\\\\)(~|-|!)*\\w+)*\\}(=>|->|=)\\d+")){
+        if (!line.matches("\\{\\w*((&|/\\\\)(~|-|!)*\\w+)*\\}(=>|->|=)(-)*\\d+")){
             throw new InvalidPatternException("Input is not valid! Syntax: \"{Ben /\\ !John} -> 5\" (without quotes).");
         }
 

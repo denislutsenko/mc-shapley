@@ -39,14 +39,6 @@ public class App {
         printf(">> Type \"exit\" to exit the app.");
     }
 
-    private static void displayPlayers() {
-        print("Created players: { ");
-        for (Player p : PlayerFactory.getPlayers()) {
-            printf(p + " ");
-        }
-        printf("}%n");
-    }
-
     public static void askForRules() throws InvalidPatternException, RuleExistsException {
         printf("%n%nEnter rules:%n");
 
@@ -60,13 +52,12 @@ public class App {
 
 
     public static void displayRulesPerPlayers(){
-        //todo
         for (Player p : PlayerFactory.getPlayers()) {
-            System.out.printf("Player %s:%n", p);
+            printf(String.format("Player %s:%n", p));
             for (Rule rule: p.getRules()){
-                System.out.printf("  %s%n", rule);
+                printf(String.format("  %s%n", rule));
             }
-            System.out.printf("%n");
+            printf("%n");
         }
 
         GameController.calculateShapley();

@@ -17,18 +17,6 @@ public class Rule {
     protected final double negShapV;
 
 
-    public static BigDecimal parseValue(String line) throws InvalidPatternException {
-        line = line.replace(" ", "");
-
-        if (!line.matches("\\{\\w*((&|/\\\\)(~|-|!)*\\w+)*\\}(=>|->|=)(-)*\\d+")){
-            throw new InvalidPatternException("Input does not match the rule's syntax! Syntax: \"{Ben /\\ !John} -> 5\" (without quotes).");
-        }
-
-        line = line.replaceAll("(=>|->|=)", "=");
-        String value = line.substring(line.indexOf("=") + 1);
-        return new BigDecimal(value);
-    }
-
     private static long factorial(long number){
 
         if (number < 0)

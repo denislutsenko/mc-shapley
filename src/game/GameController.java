@@ -15,9 +15,13 @@ import java.util.Map;
 
 public class GameController {
 
+    public static void initializeEmbedRule(String line) throws InvalidPatternException, RuleExistsException {
+        //todo
+    }
+
     public static void initializeRule(String line) throws InvalidPatternException, RuleExistsException {
-        Map<Boolean, List<Player>> literals = PlayerFactory.parsePlayers(line);
-        Rule rule = new Rule(line, literals.get(true), literals.get(false), Rule.parseValue(line));
+        Map<Boolean, List<Player>> literals = Parser.parsePlayers(line);
+        Rule rule = new Rule(line, literals.get(true), literals.get(false), Parser.parseValue(line));
 
         List<Player> allPlayers = new ArrayList<>(literals.get(true));
         allPlayers.addAll(literals.get(false));

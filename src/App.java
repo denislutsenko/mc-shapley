@@ -51,7 +51,7 @@ public class App {
     public static void initialize() {
         printf("************************************* Started ************************************%n%n");
         printf(">> All simple rules should be entered using the following syntax: \"{Ben /\\ !John} -> 5\" (without quotes).%n");
-        print("All embedded rules must contain pipe “|”. (e.g. “{a/\\b | c/\\d,e}=33”)");
+        print("All embedded rules must contain pipe \"|\". (e.g. \"{a/\\b | c/\\d,e}=33\")");
         print("Players' names are case-insensitive (e.g \"Ben\" is the same as \"ben\").");
         print("First literal of the rule can't be negated.");
         print("Symbols allowed to represent conjunction: \"&\", \"/\\\"(slash and backslash).");

@@ -18,6 +18,7 @@ public class Parser {
 
     private final static String EF_RULE_REGEX = "\\{\\w+((&|/\\\\)(~|-|!)*\\w+)*(\\|\\w+((&|/\\\\)(~|-|!)\\w+)*(,\\w+((&|/\\\\)(~|-|!)\\w+)*)*)*\\}(=>|->|=)(-)*\\d+";
 
+    private final static String MS_RULE_REGEX = "\\{\\w+((&|/\\\\)(~|-|!)*\\w+)*(\\|\\w+((&|/\\\\)(~|-|!)*\\w+)*(,\\w+((&|/\\\\)(~|-|!)*\\w+)*)*)*\\}(=>|->|=)(-)*\\d+";
 
 
     public static Map<Boolean, List<Player>> parsePlayers(String line) throws InvalidPatternException {
@@ -65,7 +66,7 @@ public class Parser {
         line = trimSpaces(line);
 
         if (!line.matches(EF_RULE_REGEX)){
-            throw new InvalidPatternException("Input does not match the rule's syntax! Syntax: \"{Ben /\\ !John} -> 5\" (without quotes).");
+            throw new InvalidPatternException("Input does not match the rule's syntax! Syntax: \"{Ben /\\ !John | Kate} -> 5\" (without quotes).");
         }
 
         String equals = line.split("\\}")[1];
@@ -91,5 +92,34 @@ public class Parser {
 
     public static String trimSpaces(String line){
         return line.replace(" ", "");
+    }
+
+    public static String convertLineToMS(String line) throws InvalidPatternException {
+        line = trimSpaces(line);
+
+        if (!line.matches(MS_RULE_REGEX)){
+            throw new InvalidPatternException("Input does not match the rule's syntax! Syntax: \"{Ben /\\ !John| Kate /\\ Adam, Miller} -> 5\" (without quotes).");
+        }
+
+        String equals = line.split("\\}")[1];
+
+        if (line.contains("{") && line.contains("}")){
+            line = line.substring(line.indexOf("{"), line.indexOf("}"));
+        }
+
+        String[] parts = line.split("\\|");
+        String rightPart = parts[0];
+        String leftPart = parts.length > 1 ? parts[1] : "";
+        String[] names = leftPart.split("&|/\\\\|,");
+        for (String name : names) {
+            if (isNegated(name)){
+                rightPart += "&" +name.substring(1);
+                continue;
+            }
+            rightPart += "&!" + name;
+        }
+
+        rightPart += "}";
+        return rightPart + equals;
     }
 }

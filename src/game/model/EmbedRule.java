@@ -7,14 +7,12 @@ public class EmbedRule {
     protected final String pattern;
     protected final Rule ef;
     protected final Rule ms;
-    protected final Rule simple;
 
 
-    public EmbedRule(String pattern, Rule ef, Rule ms, Rule simple) {
+    public EmbedRule(String pattern, Rule ef, Rule ms) {
         this.pattern = pattern;
         this.ef = ef;
         this.ms = ms;
-        this.simple = simple;
     }
 
     public double calculateEFSV(Player player){
@@ -54,9 +52,6 @@ public class EmbedRule {
         }
         if (ms != null){
             initial += String.format("%n\tMSSV %s", ms);
-        }
-        if (simple != null){
-            initial += String.format("%n\tSimple %s", simple);
         }
         return initial;
     }

@@ -95,7 +95,7 @@ public class Rule {
 
     @Override
     public String toString() {
-        return String.format("Rule: %-20s p = %-2d n = %-2d value = %-10s positive literal ShapVal  = %-10s negative literal ShapVal = %-10s",
+        return String.format("Rule: %-20s p = %-2d n = %-2d value = %-10s positive literal SV  = %-10s negative literal SV = %-10s",
                             pattern, posLiterals.size(), negLiterals.size(), value, posShapV, negShapV);
     }
 }

@@ -3,10 +3,7 @@ package game.model;
 import game.exceptions.RuleExistsException;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Player {
 
@@ -16,11 +13,16 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
-        this.rules = new HashSet<>();
+        this.rules = new LinkedHashSet<>();
+        this.embedRules = new LinkedHashSet<>();
     }
 
     public Set<Rule> getRules() {
         return Collections.unmodifiableSet(rules);
+    }
+
+    public Set<EmbedRule> getEmbedRules() {
+        return Collections.unmodifiableSet(embedRules);
     }
 
     public String getName() {
@@ -52,7 +54,7 @@ public class Player {
     public BigDecimal calculateEFSV() {
         BigDecimal total = BigDecimal.ZERO;
         for (EmbedRule embedRule : embedRules) {
-            total = total.add(BigDecimal.valueOf(embedRule.getEFSV(this)));
+            total = total.add(BigDecimal.valueOf(embedRule.calculateEFSV(this)));
         }
         return total;
     }
@@ -60,7 +62,7 @@ public class Player {
     public BigDecimal calculateMSSV() {
         BigDecimal total = BigDecimal.ZERO;
         for (EmbedRule embedRule : embedRules) {
-            total = total.add(BigDecimal.valueOf(embedRule.getMSSV(this)));
+            total = total.add(BigDecimal.valueOf(embedRule.calculateMSSV(this)));
         }
         return total;
     }

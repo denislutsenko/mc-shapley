@@ -16,9 +16,12 @@ public class Parser {
 
     private final static String RULE_REGEX = "\\{\\w+((&|/\\\\)(~|-|!)*\\w+)*\\}(=>|->|=)(-)*\\d+";
 
+    private final static String EF_RULE_REGEX = "\\{\\w+((&|/\\\\)(~|-|!)*\\w+)*(\\|\\w+((&|/\\\\)(~|-|!)\\w+)*(,\\w+((&|/\\\\)(~|-|!)\\w+)*)*)*\\}(=>|->|=)(-)*\\d+";
+
+
 
     public static Map<Boolean, List<Player>> parsePlayers(String line) throws InvalidPatternException {
-        line = line.replace(" ", "");
+        line = trimSpaces(line);
 
         if (!line.matches(RULE_REGEX)){
             throw new InvalidPatternException("Input is not valid! Syntax: \"{Ben /\\ !John} -> 5\" (without quotes).");
@@ -47,7 +50,7 @@ public class Parser {
     }
 
     public static BigDecimal parseValue(String line) throws InvalidPatternException {
-        line = line.replace(" ", "");
+        line = trimSpaces(line);
 
         if (!line.matches(RULE_REGEX)){
             throw new InvalidPatternException("Input does not match the rule's syntax! Syntax: \"{Ben /\\ !John} -> 5\" (without quotes).");
@@ -56,5 +59,37 @@ public class Parser {
         line = line.replaceAll("(=>|->|=)", "=");
         String value = line.substring(line.indexOf("=") + 1);
         return new BigDecimal(value);
+    }
+
+    public static String convertLineToEf(String line) throws InvalidPatternException {
+        line = trimSpaces(line);
+
+        if (!line.matches(EF_RULE_REGEX)){
+            throw new InvalidPatternException("Input does not match the rule's syntax! Syntax: \"{Ben /\\ !John} -> 5\" (without quotes).");
+        }
+
+        String equals = line.split("\\}")[1];
+
+        if (line.contains("{") && line.contains("}")){
+            line = line.substring(line.indexOf("{"), line.indexOf("}"));
+        }
+
+        String[] parts = line.split("\\|");
+        String rightPart = parts[0];
+        String leftPart = parts.length > 1 ? parts[1] : "";
+        String[] names = leftPart.split("&|/\\\\|,");
+        for (String name : names) {
+            if (isNegated(name)){
+                continue;
+            }
+            rightPart += "&!" + name;
+        }
+
+        rightPart += "}";
+        return rightPart + equals;
+    }
+
+    public static String trimSpaces(String line){
+        return line.replace(" ", "");
     }
 }

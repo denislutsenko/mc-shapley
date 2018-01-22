@@ -31,7 +31,7 @@ public class Player {
 
     public void addRule(Rule rule) throws RuleExistsException {
         if (rules.contains(rule)){
-            throw new RuleExistsException("Rule with such literals already exists!");
+            throw new RuleExistsException("Rule can't be added to a player!");
         }
         this.rules.add(rule);
     }

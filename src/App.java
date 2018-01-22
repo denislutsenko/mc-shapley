@@ -21,8 +21,11 @@ public class App {
                 askForRules(mode);
                 displayRulesPerPlayers(mode);
             }
+            catch (NumberFormatException ex){
+                print("Invalid option!. Choose number from the list.");
+            }
             catch (Exception ex){
-                print(ex.getMessage());
+                print(ex);
                 GameController.refresh();
             }
         }

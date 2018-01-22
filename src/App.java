@@ -1,6 +1,7 @@
 import game.GameController;
 import game.exceptions.InvalidPatternException;
 import game.exceptions.RuleExistsException;
+import game.model.EmbedRule;
 import game.model.Player;
 import game.model.PlayerFactory;
 import game.model.Rule;
@@ -16,8 +17,12 @@ public class App {
         initialize();
         while (true){
             try {
-                askForRules();
-                displayRulesPerPlayers();
+                int mode = askGameMode();
+                askForRules(mode);
+                displayRulesPerPlayers(mode);
+            }
+            catch (NumberFormatException ex){
+                print("Invalid option!. Choose number from the list.");
             }
             catch (Exception ex){
                 print(ex.getMessage());
@@ -26,7 +31,24 @@ public class App {
         }
     }
 
-    private static void initialize() {
+    public static int askGameMode() throws Exception {
+        printf("%n%nChoose MC-nets:%n");
+        print("1 - simple MC-nets");
+        print("2 - embedded MC-nets");
+
+        String line = null;
+
+        line = readLine();
+
+        int mode = Integer.parseInt(line);
+
+        if (mode < 1 || mode > 2){
+            throw new Exception("Error!. Choose net from the list above!");
+        }
+        return mode;
+    }
+
+    public static void initialize() {
         printf("************************************* Started ************************************%n%n");
         printf(">> All rules should be entered using the following syntax: \"{Ben /\\ !John} -> 5\" (without quotes).%n");
         print("Players' names are case-insensitive (e.g \"Ben\" is the same as \"ben\").");
@@ -39,37 +61,38 @@ public class App {
         printf(">> Type \"exit\" to exit the app.");
     }
 
-    private static void displayPlayers() {
-        print("Created players: { ");
-        for (Player p : PlayerFactory.getPlayers()) {
-            printf(p + " ");
-        }
-        printf("}%n");
-    }
-
-    public static void askForRules() throws InvalidPatternException, RuleExistsException {
+    public static void askForRules(int mode) throws Exception {
         printf("%n%nEnter rules:%n");
 
         String line = null;
 
         while ((line = readLine()) != null && !line.isEmpty()){
-            GameController.initializeRule(line);
+            if (mode > 1) {
+                GameController.initializeEmbedRule(line);
+            } else {
+                GameController.initializeRule(line);
+            }
         }
     }
 
 
-
-    public static void displayRulesPerPlayers(){
-        //todo
+    public static void displayRulesPerPlayers(int mode) {
         for (Player p : PlayerFactory.getPlayers()) {
-            System.out.printf("Player %s:%n", p);
-            for (Rule rule: p.getRules()){
-                System.out.printf("  %s%n", rule);
+            printf(String.format("Player %s:%n", p));
+            if (mode > 1) {
+                for (EmbedRule embedRule : p.getEmbedRules()) {
+                    printf(String.format("  %s%n", embedRule));
+                }
+                printf("%n");
+            } else {
+                for (Rule rule : p.getRules()) {
+                    printf(String.format("  %s%n", rule));
+                }
+                printf("%n");
             }
-            System.out.printf("%n");
         }
 
-        GameController.calculateShapley();
+        GameController.calculateShapley(mode);
     }
 
 }

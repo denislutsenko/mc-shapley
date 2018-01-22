@@ -3,24 +3,26 @@ package game.model;
 import game.exceptions.RuleExistsException;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Player {
 
     protected final String name;
     protected Set<Rule> rules;
-
+    protected Set<EmbedRule> embedRules;
 
     public Player(String name) {
         this.name = name;
-        this.rules = new HashSet<>();
+        this.rules = new LinkedHashSet<>();
+        this.embedRules = new LinkedHashSet<>();
     }
 
     public Set<Rule> getRules() {
         return Collections.unmodifiableSet(rules);
+    }
+
+    public Set<EmbedRule> getEmbedRules() {
+        return Collections.unmodifiableSet(embedRules);
     }
 
     public String getName() {
@@ -29,15 +31,38 @@ public class Player {
 
     public void addRule(Rule rule) throws RuleExistsException {
         if (rules.contains(rule)){
-            throw new RuleExistsException("Rule with such literals already exists!");
+            throw new RuleExistsException("Rule can't be added to a player!");
         }
         this.rules.add(rule);
+    }
+
+    public void addEmbedRule(EmbedRule embedRule) throws RuleExistsException {
+        if (embedRules.contains(embedRule)){
+            throw new RuleExistsException("Rule with such literals already exists!");
+        }
+        this.embedRules.add(embedRule);
     }
 
     public BigDecimal calculateShapley() {
         BigDecimal total = BigDecimal.ZERO;
         for (Rule rule : rules) {
             total = total.add(BigDecimal.valueOf(rule.getShapleyVal(this)));
+        }
+        return total;
+    }
+
+    public BigDecimal calculateEFSV() {
+        BigDecimal total = BigDecimal.ZERO;
+        for (EmbedRule embedRule : embedRules) {
+            total = total.add(BigDecimal.valueOf(embedRule.calculateEFSV(this)));
+        }
+        return total;
+    }
+
+    public BigDecimal calculateMSSV() {
+        BigDecimal total = BigDecimal.ZERO;
+        for (EmbedRule embedRule : embedRules) {
+            total = total.add(BigDecimal.valueOf(embedRule.calculateMSSV(this)));
         }
         return total;
     }

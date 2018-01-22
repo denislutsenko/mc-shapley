@@ -30,35 +30,6 @@ public class PlayerFactory {
         return Collections.unmodifiableList(players);
     }
 
-    public static Map<Boolean, List<Player>> parsePlayers(String line) throws InvalidPatternException {
-        line = line.replace(" ", "");
-
-        if (!line.matches("\\{\\w*((&|/\\\\)(~|-|!)*\\w+)*\\}(=>|->|=)(-)*\\d+")){
-            throw new InvalidPatternException("Input is not valid! Syntax: \"{Ben /\\ !John} -> 5\" (without quotes).");
-        }
-
-        if (line.contains("{") && line.contains("}")){
-            line = line.substring(line.indexOf("{") + 1, line.indexOf("}"));
-        }
-
-        Map<Boolean, List<Player>> players = new HashMap<>();
-        players.put(true, new ArrayList<>());
-        players.put(false, new ArrayList<>());
-
-        String[] names = line.split("&|/\\\\");
-        for (String name : names) {
-            boolean isPositive = !isNegated(name);
-            name = isPositive ? name : name.substring(1);
-            players.get(isPositive).add(getPlayer(name));
-        }
-
-        return Collections.unmodifiableMap(players);
-    }
-
-    private static boolean isNegated(String playerName){
-        return playerName.matches("^(~|-|!)[a-zA-Z0-9_]*");
-    }
-
     public static void refresh(){
         players = new ArrayList<>();
     }

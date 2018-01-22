@@ -18,7 +18,7 @@ public class Parser {
 
     private final static String EF_RULE_REGEX = "\\{\\w+((&|/\\\\)(~|-|!)*\\w+)*(\\|\\w+((&|/\\\\)(~|-|!)\\w+)*(,\\w+((&|/\\\\)(~|-|!)\\w+)*)*)*\\}(=>|->|=)(-)*\\d+";
 
-    private final static String MS_RULE_REGEX = "\\{\\w+((&|/\\\\)(~|-|!)*\\w+)*(\\|\\w+((&|/\\\\)(~|-|!)*\\w+)*(,\\w+((&|/\\\\)(~|-|!)*\\w+)*)*)*\\}(=>|->|=)(-)*\\d+";
+    private final static String MS_RULE_REGEX = "\\{\\w+((&|/\\\\)(~|-|!)*\\w+)*(\\|(~|-|!)*\\w+((&|/\\\\)(~|-|!)*\\w+)*(,\\w+((&|/\\\\)(~|-|!)*\\w+)*)*)*\\}(=>|->|=)(-)*\\d+";
 
 
     public static Map<Boolean, List<Player>> parsePlayers(String line) throws InvalidPatternException {

@@ -25,7 +25,7 @@ public class App {
                 print("Invalid option!. Choose number from the list.");
             }
             catch (Exception ex){
-                print(ex);
+                print(ex.getMessage());
                 GameController.refresh();
             }
         }
